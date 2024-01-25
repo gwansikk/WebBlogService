@@ -11,7 +11,7 @@ const config: Config = {
       container: {
         screens: {
           sm: '640px',
-          md: '820px',
+          md: '720px',
           lg: '820px',
           xl: '820px',
           '2xl': '820px',

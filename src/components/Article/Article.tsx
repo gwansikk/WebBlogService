@@ -1,13 +1,9 @@
 import React from 'react';
 
+import { Props } from '@/src/types/props';
 import classNames from 'classnames';
 
-interface ArticleProps {
-  className?: string;
-  children: React.ReactNode;
-}
-
-const Article = ({ className, children }: ArticleProps) => {
+const Article = ({ className, children }: Props) => {
   return (
     <article className={classNames('m-auto my-5 max-w-2xl', className)}>
       {children}

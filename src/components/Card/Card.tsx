@@ -3,12 +3,16 @@ import { CiCalendarDate } from 'react-icons/ci';
 import { MdOutlineTimer } from 'react-icons/md';
 import { TiPen } from 'react-icons/ti';
 
+import { PATH_FINDER } from '@/src/constants/path';
 import type { PropsWithClassName } from '@/src/types/props';
 import classNames from 'classnames';
+import dayjs from 'dayjs';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface CardProps {
   children: ReactNode;
+  to: string;
 }
 
 interface CardImageProps {
@@ -17,7 +21,7 @@ interface CardImageProps {
 }
 
 interface CardInfoProps {
-  category: string;
+  tags: string[];
   title: string;
   description: string;
 }
@@ -28,52 +32,44 @@ interface CardMetaProps {
   writer: string;
 }
 
-const Card = ({ className, children }: PropsWithClassName<CardProps>) => {
+const Card = ({ className, children, to }: PropsWithClassName<CardProps>) => {
   return (
-    <div
+    <Link
+      href={PATH_FINDER.POST(to)}
       className={classNames(
-        'cursor-pointer space-y-2 rounded-lg p-2 transition-colors hover:bg-zinc-900',
+        'flex cursor-pointer flex-col justify-between gap-2 rounded-lg p-2 transition-colors hover:bg-zinc-900',
         className,
       )}
     >
       {children}
-    </div>
+    </Link>
   );
 };
 
 Card.Image = ({ className, src, alt }: PropsWithClassName<CardImageProps>) => {
   return (
-    <div
+    <Image
+      src={src}
+      alt={alt}
+      width={568}
+      height={126}
       className={classNames(
-        'h-36 w-full rounded-lg border border-zinc-800',
+        'h-36 w-full rounded-lg border border-zinc-800 object-cover',
         className,
       )}
-    >
-      <Image
-        src={src}
-        alt={alt}
-        width={640}
-        height={480}
-        className="h-full rounded-lg object-cover"
-      />
-    </div>
+    />
   );
 };
 
 Card.Info = ({
   className,
-  category,
+  tags,
   title,
   description,
 }: PropsWithClassName<CardInfoProps>) => {
   return (
-    <div
-      className={classNames(
-        'flex flex-col justify-between text-gray-400',
-        className,
-      )}
-    >
-      <p className="text-xs">{category}</p>
+    <div className={classNames('grow text-gray-400', className)}>
+      <p className="text-xs">{tags.join(', ')}</p>
       <div className="break-keep">
         <h3 className="line-clamp-2 text-lg font-bold text-gray-200">
           {title}
@@ -98,7 +94,7 @@ Card.Meta = ({
       )}
     >
       <CiCalendarDate />
-      <span>{date}</span>
+      <span>{dayjs(date).format('YYYY.MM.DD')}</span>
       <span>•</span>
       <MdOutlineTimer />
       <span>{time}분</span>

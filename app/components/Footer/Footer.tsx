@@ -1,6 +1,6 @@
 import { FaRssSquare } from 'react-icons/fa';
 
-import { APP_NAME } from '@/src/constants/environment';
+import { APP_NAME } from '@constants/environment';
 
 const Footer = () => {
   return (

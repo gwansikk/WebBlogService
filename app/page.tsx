@@ -1,7 +1,6 @@
-import Banner from '@/src/app/components/Banner/Banner';
-
 import getPosts from '@lib/get-posts';
 
+import Banner from '@components/Banner/Banner';
 import Card from '@components/Card/Card';
 import Container from '@components/Container/Container';
 

@@ -1,8 +1,9 @@
 import { ReactNode } from 'react';
 
-import { PATH_FINDER } from '@/src/constants/path';
 import Image from 'next/image';
 import Link from 'next/link';
+
+import { PATH_FINDER } from '@constants/path';
 
 interface BannerProps {
   to: string;
@@ -14,6 +15,7 @@ interface BannerProps {
 const Banner = ({ to, src, alt, children }: BannerProps) => {
   return (
     <Link
+      scroll={false}
       href={PATH_FINDER.POST(to)}
       className="hidden cursor-pointer rounded-lg bg-none p-2 transition-colors hover:bg-zinc-900 sm:block"
     >

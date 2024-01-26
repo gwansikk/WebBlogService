@@ -1,9 +1,14 @@
 import { FaGithub } from 'react-icons/fa';
 import { MdOutlineLightMode } from 'react-icons/md';
 
-import { APP_NAME } from '@/src/constants/environment';
-import { PATH } from '@/src/constants/path';
 import Link from 'next/link';
+
+import {
+  APP_NAME,
+  APP_SOCIAL_ICON,
+  APP_SOCIAL_LINK,
+} from '@constants/environment';
+import { PATH } from '@constants/path';
 
 const Nav = () => {
   return (
@@ -21,9 +26,11 @@ const Nav = () => {
           </Link>
         </div>
         <div className="flex items-center gap-4">
-          <a href="https://github.com/gwansikk/WebBlogService" target="_blank">
-            <FaGithub className="h-5 w-5 text-zinc-300 hover:text-white" />
-          </a>
+          {APP_SOCIAL_ICON === 'github' && (
+            <a href={APP_SOCIAL_LINK} target="_blank">
+              <FaGithub className="h-5 w-5 text-zinc-300 hover:text-white" />
+            </a>
+          )}
           <MdOutlineLightMode className="h-5 w-5 cursor-pointer text-zinc-300 hover:text-white" />
         </div>
       </div>

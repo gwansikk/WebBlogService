@@ -34,7 +34,7 @@ export const getPosts = cache(async () => {
 
   // private 게시글 제외합니다.
   const publicData = data.filter((post) => post !== null) as Post[];
-  // 날짜 순으로 정렬 후 반환
+  // 날짜 순으로 정렬 후 반환합니다.
   return publicData.sort((a, b) => (a.date < b.date ? 1 : -1));
 });
 

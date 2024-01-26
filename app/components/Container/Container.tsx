@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
 
-import ScrollToTop from '@components/ScrollToTop/ScrollToTop';
+import ScrollToTop from '@/app/components/ScrollToTop/ScrollToTop';
 
 import Footer from '../Footer/Footer';
 import Nav from '../Nav/Nav';

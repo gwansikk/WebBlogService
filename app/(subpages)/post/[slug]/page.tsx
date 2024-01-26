@@ -1,4 +1,4 @@
-import getPosts, { getPost } from '@/src/lib/get-posts';
+import getPosts, { getPost } from '@/app/lib/get-posts';
 import { notFound } from 'next/navigation';
 
 import { PostBody } from './components/post-body';

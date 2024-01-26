@@ -16,8 +16,8 @@ export default async function PostPage({
   };
 }) {
   const post = await getPost(params.slug);
-  // notFound is a Next.js utility
+  // 게시글을 못찾을 경우 notFound
   if (!post) return notFound();
-  // Pass the post contents to MDX
-  return <PostBody>{post.body}</PostBody>;
+
+  return <PostBody>{post?.body}</PostBody>;
 }

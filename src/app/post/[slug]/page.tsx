@@ -1,7 +1,12 @@
-import { getPost } from '@/src/lib/get-posts';
+import getPosts, { getPost } from '@/src/lib/get-posts';
 import { notFound } from 'next/navigation';
 
 import { PostBody } from './components/post-body';
+
+export async function generateStaticParams() {
+  const posts = await getPosts();
+  return posts.map((post) => ({ slug: post.title.replace(/\s/g, '-') }));
+}
 
 export default async function PostPage({
   params,

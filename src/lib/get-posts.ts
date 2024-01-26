@@ -6,18 +6,18 @@ import path from 'path';
 
 import { Post } from '@type/post';
 
-import { APP_EXT } from '@constants/environment';
+import { APP_EXT, APP_PATH } from '@constants/environment';
 
 export const getPosts = cache(async () => {
   // process.cwd()는 vercel에서는 /var/task, 로컬에서는 프로젝트 경로
   // https://vercel.com/guides/loading-static-file-nextjs-api-route
-  const posts = await fs.readdir(path.join(process.cwd(), 'posts'));
+  const posts = await fs.readdir(path.join(process.cwd(), APP_PATH));
 
   const data = await Promise.all(
     posts
       .filter((file) => APP_EXT.includes(path.extname(file) as any))
       .map(async (file) => {
-        const filePath = `posts/${file}`;
+        const filePath = `${APP_PATH}/${file}`;
         const postContent = await fs.readFile(
           path.join(process.cwd(), filePath),
           'utf8',

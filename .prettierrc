@@ -8,7 +8,12 @@
   "importOrder": [
     "^react(.*)",
     "<THIRD_PARTY_MODULES>",
-    "^@icons/(.*)$",
+    "^@type/(.*)$",
+    "^@lib/(.*)$",
+    "^@constants/(.*)$",
+    "^@components/(.*)$",
+    "^@utils/(.*)$",
+    "^@mocks/(.*)$",
     "^[./]"
   ],
   "importOrderSeparation": true,

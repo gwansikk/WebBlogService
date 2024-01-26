@@ -18,6 +18,12 @@
       },
     ],
     "paths": {
+      "@type/*": ["./types/*"],
+      "@components/*": ["./src/components/*"],
+      "@constants/*": ["./src/constants/*"],
+      "@lib/*": ["./src/lib/*"],
+      "@mocks/*": ["./src/mocks/*"],
+      "@utils/*": ["./src/utils/*"],
       "@/*": ["./*"],
     },
   },

@@ -35,6 +35,7 @@ interface CardMetaProps {
 const Card = ({ className, children, to }: ParentProps<CardProps>) => {
   return (
     <Link
+      scroll={false}
       href={PATH_FINDER.POST(to)}
       className={classNames(
         'flex cursor-pointer flex-col justify-between gap-2 rounded-lg p-2 transition-colors hover:bg-zinc-900',

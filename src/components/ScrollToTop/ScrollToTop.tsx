@@ -12,7 +12,7 @@ const ScrollToTop = () => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
-  return <div></div>;
+  return null;
 };
 
 export default ScrollToTop;

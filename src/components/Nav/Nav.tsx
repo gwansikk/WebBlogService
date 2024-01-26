@@ -9,12 +9,16 @@ const Nav = () => {
   return (
     <nav className="fixed left-0 top-0 z-50 h-14 w-full border-b border-zinc-800 text-sm text-white backdrop-blur">
       <div className="container m-auto flex h-full items-center justify-between px-6">
-        <div className="grow space-x-4">
-          <Link className="mr-4" href={PATH.HOME}>
+        <div className="grow space-x-6">
+          <Link scroll={false} href={PATH.HOME}>
             {APP_NAME}
           </Link>
-          <Link href={PATH.HOME}>HOME</Link>
-          <Link href={PATH.ABOUT}>ABOUT</Link>
+          <Link scroll={false} href={PATH.HOME}>
+            HOME
+          </Link>
+          <Link scroll={false} href={PATH.ABOUT}>
+            ABOUT
+          </Link>
         </div>
         <div className="flex items-center gap-4">
           <a href="https://github.com/gwansikk/WebBlogService" target="_blank">

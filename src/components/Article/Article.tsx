@@ -1,9 +1,8 @@
-import React from 'react';
-
-import { Props } from '@/src/types/props';
 import classNames from 'classnames';
 
-const Article = ({ className, children }: Props) => {
+import type { ParentProps } from '@type/props';
+
+const Article = ({ className, children }: ParentProps) => {
   return (
     <article className={classNames('m-auto my-5 max-w-2xl', className)}>
       {children}

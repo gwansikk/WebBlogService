@@ -7,9 +7,7 @@ import path from 'path';
 import type { Post } from '../types/post';
 
 export const getPosts = cache(async () => {
-  const posts = await fs.readdir(path.join('posts'));
-
-  console.log(posts);
+  const posts = await fs.readdir(path.join(process.cwd(), 'posts'));
 
   const data = await Promise.all(
     posts
@@ -18,7 +16,10 @@ export const getPosts = cache(async () => {
       )
       .map(async (file) => {
         const filePath = `posts/${file}`;
-        const postContent = await fs.readFile(path.join(filePath), 'utf8');
+        const postContent = await fs.readFile(
+          path.join(process.cwd(), filePath),
+          'utf8',
+        );
         const { data, content } = matter(postContent);
 
         if (data.published === false) {

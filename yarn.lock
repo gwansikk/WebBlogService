@@ -180,6 +180,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@code-hike/lighter@npm:0.8.1":
+  version: 0.8.1
+  resolution: "@code-hike/lighter@npm:0.8.1"
+  checksum: 5e4e78b9bf5eee601eb2fa8e421329eb1e059e0840964afeff759a9069a99195a68108680cbcd535d9b2c8cd2ed673424f02fd87aabbfc703fbcf583e3985a1a
+  languageName: node
+  linkType: hard
+
 "@eslint-community/eslint-utils@npm:^4.2.0":
   version: 4.4.0
   resolution: "@eslint-community/eslint-utils@npm:4.4.0"
@@ -1167,6 +1174,18 @@ __metadata:
   dependencies:
     fill-range: "npm:^7.0.1"
   checksum: 321b4d675791479293264019156ca322163f02dc06e3c4cab33bb15cd43d80b51efef69b0930cfde3acd63d126ebca24cd0544fa6f261e093a0fb41ab9dda381
+  languageName: node
+  linkType: hard
+
+"bright@npm:^0.8.4":
+  version: 0.8.4
+  resolution: "bright@npm:0.8.4"
+  dependencies:
+    "@code-hike/lighter": "npm:0.8.1"
+    server-only: "npm:^0.0.1"
+  peerDependencies:
+    react: ^18
+  checksum: 0706dfdd8a87660493f94c201ef1cd34c4067b2e6292c116d30db62fcc63e2117763394d1e4fc30c4bc07a48a6cf95517441358496b20193dfeea8cd7b716709
   languageName: node
   linkType: hard
 
@@ -5735,6 +5754,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"server-only@npm:^0.0.1":
+  version: 0.0.1
+  resolution: "server-only@npm:0.0.1"
+  checksum: 4704f0ef85da0be981af6d4ed8e739d39bcfd265b9c246a684060acda5642d0fdc6daffc2308e71e2682c5f508090978802eae0a77623c9b90a49f9ae68048d6
+  languageName: node
+  linkType: hard
+
 "set-function-length@npm:^1.1.1":
   version: 1.2.0
   resolution: "set-function-length@npm:1.2.0"
@@ -6623,6 +6649,7 @@ __metadata:
     "@types/react": "npm:^18"
     "@types/react-dom": "npm:^18"
     autoprefixer: "npm:^10.0.1"
+    bright: "npm:^0.8.4"
     classnames: "npm:^2.5.1"
     dayjs: "npm:^1.11.10"
     eslint: "npm:^8"

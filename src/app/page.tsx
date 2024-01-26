@@ -1,12 +1,13 @@
-import Banner from '../components/Banner/Banner';
-import Card from '../components/Card/Card';
-import Container from '../components/Container/Container';
-import getPosts from '../lib/get-posts';
-import { getRandomIndex } from '../utils/array';
+import Banner from '@/src/app/components/Banner/Banner';
 
-export default async function Home() {
+import getPosts from '@lib/get-posts';
+
+import Card from '@components/Card/Card';
+import Container from '@components/Container/Container';
+
+export default async function HomePage() {
   const posts = await getPosts();
-  const banner = posts[getRandomIndex(posts)];
+  const banner = posts[0];
 
   return (
     <Container>
@@ -22,7 +23,7 @@ export default async function Home() {
         </Banner>
       )}
       <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
-        {posts?.map(({ image, title, ...props }) => (
+        {posts?.slice(1).map(({ image, title, ...props }) => (
           <Card key={title} to={title}>
             <Card.Image src={image} alt={title} />
             <Card.Info title={title} {...props} />

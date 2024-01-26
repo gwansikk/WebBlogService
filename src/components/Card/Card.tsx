@@ -2,12 +2,14 @@ import { CiCalendarDate } from 'react-icons/ci';
 import { MdOutlineTimer } from 'react-icons/md';
 import { TiPen } from 'react-icons/ti';
 
-import { PATH_FINDER } from '@/src/constants/path';
-import type { Props, PropsWithClassName } from '@/src/types/props';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import Image from 'next/image';
 import Link from 'next/link';
+
+import type { ParentProps, PropsWithClassName } from '@type/props';
+
+import { PATH_FINDER } from '@constants/path';
 
 interface CardProps {
   to: string;
@@ -30,7 +32,7 @@ interface CardMetaProps {
   writer: string;
 }
 
-const Card = ({ className, children, to }: Props<CardProps>) => {
+const Card = ({ className, children, to }: ParentProps<CardProps>) => {
   return (
     <Link
       href={PATH_FINDER.POST(to)}

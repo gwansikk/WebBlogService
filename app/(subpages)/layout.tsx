@@ -1,12 +1,11 @@
 import { PropsWithChildren } from 'react';
 
-import Article from '@/app/components/Article/Article';
-import Container from '@/app/components/Container/Container';
+import PageLayout from '@components/PageLayout/PageLayout';
 
-export default function SubLayout({ children }: PropsWithChildren) {
+export default function SubLayout({ children }: Readonly<PropsWithChildren>) {
   return (
-    <Container>
-      <Article>{children}</Article>
-    </Container>
+    <PageLayout>
+      <article>{children}</article>
+    </PageLayout>
   );
 }

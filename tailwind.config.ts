@@ -5,6 +5,8 @@ const config: Config = {
   theme: {
     extend: {
       container: {
+        center: true,
+        padding: '1.25rem',
         screens: {
           sm: '640px',
           md: '720px',

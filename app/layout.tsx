@@ -1,12 +1,14 @@
+import { APP_DESCRIPTION, APP_NAME } from '@constants/environment';
+
+import { cn } from '@utils/common';
+
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-
-import { APP_DESCRIPTION, APP_NAME } from '@constants/environment';
+import { Noto_Sans_KR } from 'next/font/google';
 
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Noto_Sans_KR({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: {
@@ -23,7 +25,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className={inter.className}>
+      <body
+        className={cn(
+          inter.className,
+          'flex min-h-dvh flex-col justify-between bg-wbs-black text-wbs-white',
+        )}
+      >
         {children}
         <SpeedInsights />
       </body>

@@ -1,19 +1,28 @@
-import { FaRssSquare } from 'react-icons/fa';
+import { FaGithub, FaRssSquare } from 'react-icons/fa';
 
-import { APP_NAME } from '@constants/environment';
+import { APP_NAME, APP_SOCIAL_LINK } from '@constants/environment';
+
+import Button from '@components/Button/Button';
+import LinkButton from '@components/LinkButton/LinkButton';
 
 const Footer = () => {
   return (
-    <footer className="bg-zinc-900 py-5 text-sm text-wbs-white">
-      <div className="container m-auto flex justify-between px-6">
-        <div className="space-x-1">
-          <span>© {APP_NAME}.</span>
-          <span>•</span>
-          <span>Powered By WebBlogService</span>
-        </div>
-        <div>
-          <FaRssSquare className="h-5 w-5 cursor-pointer hover:text-white" />
-        </div>
+    <footer className="container flex justify-between py-4 text-sm">
+      <ul className="flex items-center gap-1">
+        <li>© {APP_NAME}.</li>
+        <li>•</li>
+        <li>Powered By WebBlogService,</li>
+        <li>Next.js</li>
+      </ul>
+      <div className="flex items-center gap-2">
+        {APP_SOCIAL_LINK?.map(({ icon, link }) => (
+          <LinkButton key={link} href={link} target="_blank">
+            <FaGithub className="size-5" />
+          </LinkButton>
+        ))}
+        <Button>
+          <FaRssSquare className="size-5" />
+        </Button>
       </div>
     </footer>
   );

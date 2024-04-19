@@ -1,15 +1,17 @@
 import { CiCalendarDate } from 'react-icons/ci';
 import { MdOutlineTimer } from 'react-icons/md';
-import { TiPen } from 'react-icons/ti';
 
-import classNames from 'classnames';
+import { PATH_FINDER } from '@constants/path';
+
+import { cn } from '@utils/common';
+
+import Badge from '@components/Badge/Badge';
+
 import dayjs from 'dayjs';
 import Image from 'next/image';
 import Link from 'next/link';
 
 import type { ParentProps, PropsWithClassName } from '@type/props';
-
-import { PATH_FINDER } from '@constants/path';
 
 interface CardProps {
   to: string;
@@ -37,7 +39,7 @@ const Card = ({ className, children, to }: ParentProps<CardProps>) => {
     <Link
       scroll={false}
       href={PATH_FINDER.POST(to)}
-      className={classNames(
+      className={cn(
         'flex cursor-pointer flex-col justify-between gap-2 rounded-lg p-2 transition-colors hover:bg-zinc-900',
         className,
       )}
@@ -47,14 +49,18 @@ const Card = ({ className, children, to }: ParentProps<CardProps>) => {
   );
 };
 
-Card.Image = ({ className, src, alt }: PropsWithClassName<CardImageProps>) => {
+const CardImage = ({
+  className,
+  src,
+  alt,
+}: PropsWithClassName<CardImageProps>) => {
   return (
     <Image
       src={src}
       alt={alt}
       width={568}
       height={126}
-      className={classNames(
+      className={cn(
         'h-36 w-full rounded-lg border border-zinc-800 object-cover',
         className,
       )}
@@ -62,17 +68,21 @@ Card.Image = ({ className, src, alt }: PropsWithClassName<CardImageProps>) => {
   );
 };
 
-Card.Info = ({
+const CardInfo = ({
   className,
   tags,
   title,
   description,
 }: PropsWithClassName<CardInfoProps>) => {
   return (
-    <div className={classNames('grow text-gray-400', className)}>
-      <p className="text-xs">{tags.join(', ')}</p>
+    <div className={cn('grow text-wbs-white/70', className)}>
+      <div className="flex gap-2 text-xs">
+        {tags.map((tag) => (
+          <Badge key={tag}>{tag.toUpperCase()}</Badge>
+        ))}
+      </div>
       <div className="break-keep">
-        <h3 className="line-clamp-2 text-lg font-bold text-gray-200">
+        <h3 className="line-clamp-2 text-lg font-semibold text-white">
           {title}
         </h3>
         <p className="line-clamp-3 text-sm leading-normal">{description}</p>
@@ -81,16 +91,15 @@ Card.Info = ({
   );
 };
 
-Card.Meta = ({
+const CardMeta = ({
   className,
   date,
   time,
-  writer,
 }: PropsWithClassName<CardMetaProps>) => {
   return (
     <div
-      className={classNames(
-        'flex items-center gap-1 text-xs text-gray-400',
+      className={cn(
+        'flex items-center justify-end gap-1 text-xs text-wbs-white/70',
         className,
       )}
     >
@@ -99,11 +108,16 @@ Card.Meta = ({
       <span>•</span>
       <MdOutlineTimer />
       <span>{time}분</span>
-      <span>•</span>
-      <TiPen />
-      <span>{writer}</span>
     </div>
   );
 };
+
+CardImage.displayName = 'CardImage';
+CardInfo.displayName = 'CardInfo';
+CardMeta.displayName = 'CardMeta';
+
+Card.Image = CardImage;
+Card.Info = CardInfo;
+Card.Meta = CardMeta;
 
 export default Card;

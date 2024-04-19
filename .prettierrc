@@ -7,12 +7,12 @@
   "printWidth": 80,
   "importOrder": [
     "^react(.*)",
+    "^@constants/(.*)$",
+    "^@lib/(.*)$",
+    "^@utils/(.*)$",
+    "^@components/(.*)$",
     "<THIRD_PARTY_MODULES>",
     "^@type/(.*)$",
-    "^@lib/(.*)$",
-    "^@constants/(.*)$",
-    "^@components/(.*)$",
-    "^@utils/(.*)$",
     "^@mocks/(.*)$",
     "^[./]"
   ],

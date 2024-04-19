@@ -1,4 +1,5 @@
-export type Ext = '.mdx' | '.md';
+type Ext = '.mdx' | '.md';
+type SocialIcon = 'github' | 'facebook' | 'twitter' | 'instagram' | 'linkedin';
 
 export type Config = {
   name: string; // 서비스 이름
@@ -8,8 +9,10 @@ export type Config = {
   metadata: {
     description: string;
   };
-  socialLinks?: {
-    icon: 'github';
-    link: string;
-  };
+  socialLinks?: [
+    {
+      icon: SocialIcon;
+      link: string;
+    },
+  ];
 };

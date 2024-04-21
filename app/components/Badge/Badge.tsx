@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { ComponentPropsWithRef } from 'react';
 
-interface BadgeProps {
-  children: React.ReactNode;
-}
+import { cn } from '@utils/common';
 
-const Badge = ({ children }: BadgeProps) => {
+interface BadgeProps extends ComponentPropsWithRef<'span'> {}
+
+const Badge = ({ className, children }: BadgeProps) => {
   return (
-    <span className="rounded bg-wbs-white px-1 text-black">{children}</span>
+    <span
+      className={cn(
+        'text-nowrap rounded bg-wbs-white px-1 text-xs text-wbs-black',
+        className,
+      )}
+    >
+      {children}
+    </span>
   );
 };
 

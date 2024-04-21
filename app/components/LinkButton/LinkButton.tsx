@@ -14,10 +14,9 @@ interface LinkButtonProps {
 const LinkButton = ({ className, children, ...rest }: LinkButtonProps) => {
   return (
     <Link
-      scroll={false}
       className={cn(
-        className,
         'rounded-lg p-1.5 transition-colors hover:bg-wbs-white/10',
+        className,
       )}
       {...rest}
     >

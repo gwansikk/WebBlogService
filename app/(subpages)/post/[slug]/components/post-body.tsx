@@ -6,17 +6,19 @@ import remarkToc from 'remark-toc';
 
 import { mdxComponents } from './markdown-components';
 
-export function PostBody({ children }: { children: string }) {
+export function PostBody({ children }: Readonly<{ children: string }>) {
   return (
-    <MDXRemote
-      source={children}
-      options={{
-        mdxOptions: {
-          remarkPlugins: [remarkGfm, remarkToc],
-          rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings],
-        },
-      }}
-      components={mdxComponents}
-    />
+    <section>
+      <MDXRemote
+        source={children}
+        options={{
+          mdxOptions: {
+            remarkPlugins: [remarkGfm, remarkToc],
+            rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings],
+          },
+        }}
+        components={mdxComponents}
+      />
+    </section>
   );
 }

@@ -1,18 +1,17 @@
 import { cache } from 'react';
 
+import { APP_EXT, APP_PATH } from '@constants/environment';
+
 import fs from 'fs/promises';
 import matter from 'gray-matter';
 import path from 'path';
 
-import { Post } from '@type/post';
-
-import { APP_EXT, APP_PATH } from '@constants/environment';
+import type { Post } from '@type/post';
 
 export const getPosts = cache(async () => {
   // process.cwd()는 vercel에서는 /var/task, 로컬에서는 프로젝트 경로
   // https://vercel.com/guides/loading-static-file-nextjs-api-route
   const posts = await fs.readdir(path.join(process.cwd(), APP_PATH));
-
   const data = await Promise.all(
     posts
       .filter((file) => APP_EXT.includes(path.extname(file) as any))
@@ -31,7 +30,6 @@ export const getPosts = cache(async () => {
         return { ...data, body: content } as Post;
       }),
   );
-
   // private 게시글 제외합니다.
   const publicData = data.filter((post) => post !== null) as Post[];
   // 날짜 순으로 정렬 후 반환합니다.

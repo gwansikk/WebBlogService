@@ -4,13 +4,14 @@ import { MdOutlineTimer } from 'react-icons/md';
 import { PATH_FINDER } from '@constants/path';
 
 import { cn } from '@utils/common';
+import { formatDate } from '@utils/date';
 
 import Badge from '@components/Badge/Badge';
 
-import dayjs from 'dayjs';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import type { Post } from '@type/post';
 import type { ParentProps, PropsWithClassName } from '@type/props';
 
 interface CardProps {
@@ -22,22 +23,15 @@ interface CardImageProps {
   alt: string;
 }
 
-interface CardInfoProps {
-  tags: string[];
-  title: string;
-  description: string;
-}
+interface CardInfoProps extends Pick<Post, 'tags' | 'title' | 'description'> {}
 
-interface CardMetaProps {
-  date: string;
+interface CardMetaProps extends Pick<Post, 'date'> {
   time: number;
-  writer: string;
 }
 
 const Card = ({ className, children, to }: ParentProps<CardProps>) => {
   return (
     <Link
-      scroll={false}
       href={PATH_FINDER.POST(to)}
       className={cn(
         'flex cursor-pointer flex-col justify-between gap-2 rounded-lg p-2 transition-colors hover:bg-zinc-900',
@@ -60,6 +54,9 @@ const CardImage = ({
       alt={alt}
       width={568}
       height={126}
+      priority
+      placeholder="blur"
+      blurDataURL={src}
       className={cn(
         'h-36 w-full rounded-lg border border-zinc-800 object-cover',
         className,
@@ -76,7 +73,7 @@ const CardInfo = ({
 }: PropsWithClassName<CardInfoProps>) => {
   return (
     <div className={cn('grow text-wbs-white/70', className)}>
-      <div className="flex gap-2 text-xs">
+      <div className="flex gap-2">
         {tags.map((tag) => (
           <Badge key={tag}>{tag.toUpperCase()}</Badge>
         ))}
@@ -104,7 +101,7 @@ const CardMeta = ({
       )}
     >
       <CiCalendarDate />
-      <span>{dayjs(date).format('YYYY.MM.DD')}</span>
+      <time dateTime={date.toISOString()}>{formatDate(date)}</time>
       <span>•</span>
       <MdOutlineTimer />
       <span>{time}분</span>

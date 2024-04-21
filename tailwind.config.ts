@@ -1,5 +1,9 @@
 import type { Config } from 'tailwindcss';
 
+import wbsConfig from './wbs.config';
+
+const maxWidth = wbsConfig.theme.maxWidth;
+
 const config: Config = {
   content: ['./app/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
@@ -10,9 +14,9 @@ const config: Config = {
         screens: {
           sm: '640px',
           md: '720px',
-          lg: '820px',
-          xl: '820px',
-          '2xl': '820px',
+          lg: maxWidth + 'px',
+          xl: maxWidth + 'px',
+          '2xl': maxWidth + 'px',
         },
       },
       colors: {

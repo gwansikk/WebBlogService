@@ -1,17 +1,16 @@
-import path from 'path';
+import { APP_BASE_URL, APP_PATH } from '@constants/environment';
 
 import getPosts from '@lib/get-posts';
 
-import { APP_PATH, APP_SITE } from '@constants/environment';
+import path from 'path';
 
 export default async function sitemap() {
   const posts = await getPosts();
   const blogs = posts.map((post) => ({
-    url: path.join(APP_SITE, APP_PATH, post.title.replace(/ /g, '-')),
+    url: path.join(APP_BASE_URL, APP_PATH, post.title.replace(/ /g, '-')),
   }));
-
-  const routes = ['', '/about', '/post', '/'].map((route) => ({
-    url: path.join(APP_SITE, route),
+  const routes = ['', '/', '/about', '/post'].map((route) => ({
+    url: path.join(APP_BASE_URL, route),
   }));
 
   return [...routes, ...blogs];

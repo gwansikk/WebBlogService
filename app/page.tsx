@@ -9,27 +9,28 @@ export default async function MainPage() {
   const banner = posts[0];
 
   return (
-    <PageLayout>
-      {banner && (
-        <Banner
-          to={banner.title}
-          src={banner.image}
-          alt={banner.title}
+    <PageLayout className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <Banner
+        to={banner.title}
+        src={banner.thumbnail}
+        alt={banner.title}
+        className="sm:col-span-2 lg:col-span-3"
+        {...banner}
+      >
+        <Card.Info className="text-wbs-white" {...banner} />
+        <Card.Meta
+          className="justify-start text-wbs-white"
+          time={10}
           {...banner}
-        >
-          <Card.Info className="text-wbs-white" {...banner} />
-          <Card.Meta className="text-wbs-white" time={10} {...banner} />
-        </Banner>
-      )}
-      <div className="grid gap-3 sm:mt-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
-        {posts?.slice(1).map(({ image, title, ...props }) => (
-          <Card key={title} to={title}>
-            <Card.Image src={image} alt={title} />
-            <Card.Info title={title} {...props} />
-            <Card.Meta time={13} {...props} />
-          </Card>
-        ))}
-      </div>
+        />
+      </Banner>
+      {posts?.slice(1).map(({ thumbnail, title, ...props }) => (
+        <Card key={title} to={title}>
+          <Card.Image src={thumbnail} alt={title} />
+          <Card.Info title={title} {...props} />
+          <Card.Meta time={13} {...props} />
+        </Card>
+      ))}
     </PageLayout>
   );
 }

@@ -1,13 +1,17 @@
-import { PropsWithChildren } from 'react';
+import { cn } from '@utils/common';
+
+import type { ParentProps } from '@type/props';
 
 import Footer from '../Footer/Footer';
 import Nav from '../Nav/Nav';
 
-const PageLayout = ({ children }: PropsWithChildren) => {
+const PageLayout = ({ className, children }: ParentProps) => {
   return (
     <>
       <Nav />
-      <main className="container mt-14 justify-between py-5">{children}</main>
+      <main className={cn('container mt-14 justify-between py-5', className)}>
+        {children}
+      </main>
       <Footer />
     </>
   );

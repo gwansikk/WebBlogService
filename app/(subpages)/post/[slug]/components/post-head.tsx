@@ -30,11 +30,11 @@ const PostHead = ({
         src={thumbnail}
         alt={title}
         width={APP_THEME_MAX_WIDTH}
-        height={APP_THEME_MAX_WIDTH}
+        height={520}
         placeholder="blur"
         blurDataURL={thumbnail}
         priority
-        className="w-full rounded-lg border border-zinc-800 object-cover"
+        className="h-[520px] w-full rounded-lg border border-zinc-800 object-cover"
       />
       <div>
         <div className="flex gap-2">
@@ -42,7 +42,9 @@ const PostHead = ({
             <Badge key={tag}>{tag.toUpperCase()}</Badge>
           ))}
         </div>
-        <h1 className="text-4xl font-bold text-white">{title}</h1>
+        <h1 className="text-4xl font-bold leading-relaxed text-white">
+          {title}
+        </h1>
         <p>{description}</p>
         <div className="mt-2 flex items-center gap-1 text-sm text-gray-400">
           <CiCalendarDate />

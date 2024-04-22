@@ -5,29 +5,37 @@ import type { MDXComponents } from 'mdx/types';
 import Image from 'next/image';
 
 export const mdxComponents: MDXComponents = {
-  h1: (props) => (
-    <h1 className="!mt-10 text-3xl font-semibold text-white" {...props} />
+  h1: ({ children, ...rest }) => (
+    <h1
+      id={children?.toString().replace(/ /g, '-').toLowerCase()}
+      className="pt-8 text-3xl font-semibold text-white"
+      {...rest}
+    >
+      {children}
+    </h1>
   ),
   p: (props) => <p {...props} />,
-  a: (props) => (
+  a: ({ children, ...rest }) => (
     <a
       className="text-zinc-400 underline underline-offset-4"
       target="_blank"
-      {...props}
-    />
+      {...rest}
+    >
+      {children}
+    </a>
   ),
   img: (props) => {
     const imageURL = props.src?.replace('../public', '') as string;
     return (
       <Image
         width={APP_THEME_MAX_WIDTH}
-        height={APP_THEME_MAX_WIDTH}
+        height={520}
         priority
         placeholder="blur"
         blurDataURL={imageURL}
         src={imageURL}
         alt={props.alt as string}
-        className="w-full rounded-lg border border-zinc-800 object-cover"
+        className="h-[520px] w-full rounded-lg border border-zinc-800 object-cover"
       />
     );
   },

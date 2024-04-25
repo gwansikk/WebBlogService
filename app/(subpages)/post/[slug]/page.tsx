@@ -2,6 +2,7 @@ import getPosts, { getPost } from '@/app/lib/get-posts';
 import { notFound } from 'next/navigation';
 
 import { PostBody } from './components/post-body';
+import PostFooter from './components/post-footer';
 import PostHead from './components/post-head';
 
 type PostPrams = {
@@ -24,6 +25,7 @@ export default async function PostPage({ params }: Readonly<PostPrams>) {
     <>
       <PostHead {...post} time={10} />
       <PostBody>{post?.body}</PostBody>
+      <PostFooter />
     </>
   );
 }

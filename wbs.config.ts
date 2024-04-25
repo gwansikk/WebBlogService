@@ -9,6 +9,7 @@ const config: Config = {
   icon: '🧩',
   name: 'WebBlogService',
   baseURL: 'https://web-blog-service.vercel.app',
+  email: 'iam@gwansik.dev',
   path: 'posts',
   ext: ['.mdx', '.md'],
   metadata: {

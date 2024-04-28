@@ -2,7 +2,8 @@ import type { Config } from 'tailwindcss';
 
 import wbsConfig from './wbs.config';
 
-const maxWidth = wbsConfig.theme.maxWidth;
+const screens = wbsConfig.theme.screens;
+const theme = wbsConfig.theme.colors;
 
 const config: Config = {
   content: ['./app/**/*.{js,ts,jsx,tsx,mdx}'],
@@ -14,15 +15,16 @@ const config: Config = {
         screens: {
           sm: '640px',
           md: '720px',
-          lg: maxWidth + 'px',
-          xl: maxWidth + 'px',
-          '2xl': maxWidth + 'px',
+          lg: screens.maxWidth + 'px',
+          xl: screens.maxWidth + 'px',
+          '2xl': screens.maxWidth + 'px',
         },
       },
       colors: {
         'wbs-white': '#ddddde',
         'wbs-black': '#111010',
         'wbs-gray': '#262626',
+        'wbs-primary': theme.primary,
       },
     },
   },

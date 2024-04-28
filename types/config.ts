@@ -19,6 +19,11 @@ export type Config = {
   ];
   theme: {
     // 테마 설정
-    maxWidth: number; // 콘텐츠 최대 너비
+    colors: {
+      primary: string; // 주요 색상
+    };
+    screens: {
+      maxWidth: number; // 콘텐츠 최대 너비
+    };
   };
 };

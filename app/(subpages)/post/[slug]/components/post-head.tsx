@@ -2,7 +2,7 @@ import React from 'react';
 import { CiCalendarDate } from 'react-icons/ci';
 import { MdOutlineTimer } from 'react-icons/md';
 
-import { APP_THEME_MAX_WIDTH } from '@constants/environment';
+import { APP_THEME_SCREENS_MAX_WIDTH } from '@constants/environment';
 
 import { formatDate } from '@utils/date';
 
@@ -29,7 +29,7 @@ const PostHead = ({
       <Image
         src={thumbnail}
         alt={title}
-        width={APP_THEME_MAX_WIDTH}
+        width={APP_THEME_SCREENS_MAX_WIDTH}
         height={520}
         placeholder="blur"
         blurDataURL={thumbnail}

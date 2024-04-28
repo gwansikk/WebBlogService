@@ -1,4 +1,4 @@
-import { APP_THEME_MAX_WIDTH } from '@constants/environment';
+import { APP_THEME_SCREENS_MAX_WIDTH } from '@constants/environment';
 
 import { Code } from 'bright';
 import type { MDXComponents } from 'mdx/types';
@@ -28,7 +28,7 @@ export const mdxComponents: MDXComponents = {
     const imageURL = props.src?.replace('../public', '') as string;
     return (
       <Image
-        width={APP_THEME_MAX_WIDTH}
+        width={APP_THEME_SCREENS_MAX_WIDTH}
         height={520}
         priority
         placeholder="blur"

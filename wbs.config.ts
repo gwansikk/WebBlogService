@@ -22,7 +22,12 @@ const config: Config = {
     },
   ],
   theme: {
-    maxWidth: 820,
+    colors: {
+      primary: '#ac32f0',
+    },
+    screens: {
+      maxWidth: 820,
+    },
   },
 };
 

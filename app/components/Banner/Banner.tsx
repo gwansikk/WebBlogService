@@ -1,4 +1,4 @@
-import { APP_THEME_MAX_WIDTH } from '@constants/environment';
+import { APP_THEME_SCREENS_MAX_WIDTH } from '@constants/environment';
 import { PATH_FINDER } from '@constants/path';
 
 import { cn } from '@utils/common';
@@ -20,7 +20,7 @@ const Banner = ({ to, src, alt, className, children }: BannerProps) => {
       scroll={false}
       href={PATH_FINDER.POST(to)}
       className={cn(
-        'block cursor-pointer rounded-lg bg-none p-2 transition-colors hover:bg-zinc-900',
+        'hover:border-wbs-primary rounded-lg border-2 border-transparent bg-none p-2 transition duration-300 ease-in-out hover:scale-105',
         className,
       )}
     >
@@ -28,8 +28,8 @@ const Banner = ({ to, src, alt, className, children }: BannerProps) => {
         <Image
           src={src}
           alt={alt}
-          width={APP_THEME_MAX_WIDTH}
-          height={APP_THEME_MAX_WIDTH}
+          width={APP_THEME_SCREENS_MAX_WIDTH}
+          height={240}
           priority
           placeholder="blur"
           blurDataURL={src}

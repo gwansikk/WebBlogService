@@ -14,27 +14,29 @@ import Link from 'next/link';
 import type { Post } from '@type/post';
 import type { ParentProps, PropsWithClassName } from '@type/props';
 
-interface CardProps {
+interface CardProps extends ParentProps {
   to: string;
 }
 
-interface CardImageProps {
+interface CardImageProps extends PropsWithClassName {
   src: string;
   alt: string;
 }
 
-interface CardInfoProps extends Pick<Post, 'tags' | 'title' | 'description'> {}
+interface CardInfoProps
+  extends Pick<Post, 'tags' | 'title' | 'description'>,
+    PropsWithClassName {}
 
 interface CardMetaProps extends Pick<Post, 'date'> {
   time: number;
 }
 
-const Card = ({ className, children, to }: ParentProps<CardProps>) => {
+const Card = ({ className, children, to }: CardProps) => {
   return (
     <Link
       href={PATH_FINDER.POST(to)}
       className={cn(
-        'flex cursor-pointer flex-col justify-between gap-2 rounded-lg p-2 transition-colors hover:bg-zinc-900',
+        'hover:border-wbs-primary flex flex-col justify-between gap-2 rounded-lg border-2 border-transparent p-2 transition duration-300 ease-in-out hover:-translate-y-2 hover:border-2',
         className,
       )}
     >
@@ -43,11 +45,7 @@ const Card = ({ className, children, to }: ParentProps<CardProps>) => {
   );
 };
 
-const CardImage = ({
-  className,
-  src,
-  alt,
-}: PropsWithClassName<CardImageProps>) => {
+const CardImage = ({ className, src, alt }: CardImageProps) => {
   return (
     <Image
       src={src}
@@ -65,12 +63,7 @@ const CardImage = ({
   );
 };
 
-const CardInfo = ({
-  className,
-  tags,
-  title,
-  description,
-}: PropsWithClassName<CardInfoProps>) => {
+const CardInfo = ({ className, tags, title, description }: CardInfoProps) => {
   return (
     <div className={cn('grow text-wbs-white/70', className)}>
       <div className="flex gap-2">

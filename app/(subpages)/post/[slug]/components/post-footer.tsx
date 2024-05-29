@@ -4,7 +4,7 @@ import { APP_CONTACT } from '@constants/environment';
 
 const PostFooter = () => {
   return (
-    <footer className="mt-9 text-center text-sm">
+    <footer className="mt-9 rounded-lg border bg-wbs-white/10 p-2.5 text-center text-sm">
       <ul>
         <li>
           작성된 내용에 잘못된 점이 있거나 물어보고 싶은 점이 있으시면 언제든지

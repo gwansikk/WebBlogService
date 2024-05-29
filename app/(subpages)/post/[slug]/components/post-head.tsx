@@ -34,7 +34,7 @@ const PostHead = ({
         placeholder="blur"
         blurDataURL={thumbnail}
         priority
-        className="h-[520px] w-full rounded-lg border border-zinc-800 object-cover"
+        className="h-[520px] w-full rounded-lg border border-zinc-800 object-cover object-left-top"
       />
       <div>
         <div className="flex gap-2">

@@ -20,7 +20,7 @@ const Banner = ({ to, src, alt, className, children }: BannerProps) => {
       scroll={false}
       href={PATH_FINDER.POST(to)}
       className={cn(
-        'hover:border-wbs-primary rounded-lg border-2 border-transparent bg-none p-2 transition duration-300 ease-in-out hover:scale-105',
+        'rounded-lg border-2 border-transparent bg-none p-2 transition duration-300 ease-in-out hover:scale-105 hover:border-wbs-primary',
         className,
       )}
     >
@@ -33,7 +33,7 @@ const Banner = ({ to, src, alt, className, children }: BannerProps) => {
           priority
           placeholder="blur"
           blurDataURL={src}
-          className="h-full w-full rounded-lg border border-zinc-800 object-cover"
+          className="h-full w-full rounded-lg border border-zinc-800 object-cover object-left-top"
         />
         <div className="pointer-events-none absolute inset-0 h-full w-full rounded-lg bg-gradient-to-t from-black/50 via-black/30" />
         <div className="pointer-events-none absolute bottom-0 whitespace-nowrap p-4 text-start">

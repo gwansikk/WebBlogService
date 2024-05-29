@@ -36,7 +36,7 @@ const Card = ({ className, children, to }: CardProps) => {
     <Link
       href={PATH_FINDER.POST(to)}
       className={cn(
-        'hover:border-wbs-primary flex flex-col justify-between gap-2 rounded-lg border-2 border-transparent p-2 transition duration-300 ease-in-out hover:-translate-y-2 hover:border-2',
+        'flex flex-col justify-between gap-2 rounded-lg border-2 border-transparent p-2 transition duration-300 ease-in-out hover:-translate-y-2 hover:border-2 hover:border-wbs-primary',
         className,
       )}
     >
@@ -56,7 +56,7 @@ const CardImage = ({ className, src, alt }: CardImageProps) => {
       placeholder="blur"
       blurDataURL={src}
       className={cn(
-        'h-36 w-full rounded-lg border border-zinc-800 object-cover',
+        'h-36 w-full rounded-lg border border-zinc-800 object-cover object-left-top',
         className,
       )}
     />

@@ -1,0 +1,169 @@
+---
+title: VitePress, 새로운 것을 제안하여 기여하기
+description: VitePress 컨트리뷰션 하는 에피소드를 이야기합니다.
+date: 2024-01-21
+tags: [vitepress]
+thumbnail: /assets/vitepress-contribution/vite-landing-page.webp
+---
+
+# 들어가며
+
+저는 여러 오픈소스 라이브러리를 개발하면서 공식 문서 작성을 위해 Documentation Framework를 사용하고 있어요. 직접 만들어서 사용할 수 있겠지만 직접 구축하는 비용은 많이 든다고 생각해요. 시간이나 기술 러닝 커브 더하여 SEO 최적화나 디자인 등등 고려할 게 많아 문서화가 필요한 것은 Documentation Framework를 사용하고 있지요.
+
+이번 chain이라는 Fetch API 확장 라이브러리를 만들면서 Documentation Framework인 VitePress를 사용하는 중에 필요한 기능을 제안하여 기여하게 된 에피소드를 이야기하고자 해요.
+
+# Documentation Framework는 뭔가요?
+
+![frameworks](../public/assets/vitepress-contribution/framworks.webp)
+
+Documentation Framework는 README.md 혹은 Wiki와 같이 라이브러리의 가이드와 설명을 담은 문서를 웹으로 쉽게 구축할 수 있도록 도와주는 프레임워크에요. SEO 최적화는 물론이고 국제화(i18n), 콘텐츠 검색 기능 등 다양한 기능이 들어가 있어서 사용자는 문서만 작성하면 끝이에요. 프레임워크가 알아서 다 해주거든요. 대표적으로는 VitePress, Docusaurus, Nextra가 있습니다.
+
+![VitePress 랜딩페이지](../public/assets/vitepress-contribution/vite-landing-page.webp)
+
+그중 저는 VitePress를 사용하기로 결정했습니다. 예전에 Rollup이나 Vitest와 같은 공식 문서를 많이 봤을 때의 경험과 심플한 디자인과 렌딩 페이지가 사로잡았고, 커스텀 설정이 잘 구성되어 있어 코드 수정 없이 빠르게 커스텀 마이징을 할 수 있어 VitePress를 선택하게 됐어요. 또한 공식 문서는 한글화가 되어있어 빠르게 배울 수 있습니다.
+
+기술적으로는 전통적인 SSG 들과 달리 전체 페이지를 새로고침을 하는 것이 아니라 초기 방문 시 정적 HTML을 받고 이후는 SPA로 탐색하는 방식으로 성능에 있어 최적의 균형을 제공하고 있다고 해요. (해당 장점에 대해서는 분석하여 다른 게시글을 통해 직접 확인해 볼게요!)
+
+# NPM 소셜 링크가 필요했어요
+
+![NPM 소셜링크](../public/assets/vitepress-contribution/npm-sociallink.webp)
+
+저는 라이브러리를 개발하면 항상 npm에 배포했어요. 이는 Node.js 생태계 라이브러리 개발자라면 필수적이라고 생각해요. 평소와 같이 라이브러리를 개발하고 배포하여 공식 문서를 작성하는 도중에 반복적으로 하는 일이 생겼어요. 그것은 바로 네비바(Navbar)에 NPM을 링크하는 아이콘을 생성하는 것입니다.
+
+```ts
+// config.mts의 socialLinks 타입
+interface SocialLink {
+  icon: SocialLinkIcon;
+  link: string;
+  ariaLabel?: string;
+}
+
+// 공식적으로 사용할 수 있는 소셜링크
+type SocialLinkIcon =
+  | 'discord'
+  | 'facebook'
+  | 'github'
+  | 'instagram'
+  | 'linkedin'
+  | 'mastodon'
+  | 'slack'
+  | 'twitter'
+  | 'x'
+  | 'youtube'
+  | { svg: string };
+```
+
+VitePress에서는 `.vitepress/config.mts`에서 네비바에 있는 소셜 링크를 설정할 수 있어요. 코드를 살펴보면 총 10가지로 NPM이 옵션에 없는 것을 확인할 수 있어요. 많은 라이브러리 개발자가 NPM을 통해 배포하게 될 텐데 없다는 것에 참 의아했어요. VitePress를 통해 공식 문서를 운영하는 유명한 라이브러리 중 Vite, Rollup, Pinia, Vitest, D3 등 이 있는데 이 모두 NPM 통해 배포되고 있는데도 말이죠.
+
+![소셜링크 예제](../public/assets/vitepress-contribution/sociallinks-example.webp)
+
+그래서 어쩔 수 없이 npm은 커스텀으로 추가하여 직접 사용해야 했어요. 공식 문서에서 소개된 것처럼 NPM의 SVG 코드를 가져와 직접 추가하는 방법뿐이었죠.
+
+```ts
+socialLinks: [
+  {
+    icon: {
+      svg: '<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>npm</title><path d="M1.763 0C.786 0 0 .786 0 1.763v20.474C0 23.214.786 24 1.763 24h20.474c.977 0 1.763-.786 1.763-1.763V1.763C24 .786 23.214 0 22.237 0zM5.13 5.323l13.837.019-.009 13.836h-3.464l.01-10.382h-3.456L12.04 19.17H5.113z"/></svg>',
+    },
+    link: "https://www.npmjs.com/package/@gwansikk/server-chain",
+  },
+],
+```
+
+해당 작업은 매우 번거로울 뿐만 아니라 NPM에 배포하는 라이브러리의 공식 문서로 VitePress를 사용한다면 매번 해야 하는 반복적인 작업이었습니다. 저 뿐만 아니라 다른 개발자분들도 똑같이 하고 있을 거라 생각해요. 여기서 불편함을 느껴 개선하고자 하는 마음이 생겼습니다.
+
+필요한 건 전부 있는데 맨 오른쪽 NPM만 없다니, Logo에 라이선스 문제가 있나라고 생각이 들기도 했죠.
+
+# 기여의 첫 번째 걸음
+
+기여하기 위해 VitePress의 레포지토리에 방문하여 기여에 대한 가이드가 작성된 contributing.md를 읽어봤어요. 해당 문서에서 알게 된 것은 기여에 관한 [행동 강령 (Code of Conduct)](https://www.contributor-covenant.org/version/1/0/0/code-of-conduct/)에 대해서 처음 알게 되었어요.
+
+```md
+- If adding a new feature:
+
+  - Provide a convincing reason to add this feature. Ideally, you should open a suggestion issue first and have it approved before working on it.
+```
+
+새로운 기능을 추가해야 하는 이슈(Issue)를 설득력 있게 제시하라고 되어 있습니다. 또한 제안은 이슈를 통해 먼저 승인받으라고 되어 있어요.
+
+그래서 저는 선례가 있는지 기존에 소셜 링크 관련 PR을 전부 찾아봤습니다. 기존에 소셜 링크들은 어떻게 추가되었고 어떤 과정을 거치게 되었는지 확인해 본 거예요. 그러는 중 충격적인 사실을 알게 됩니다.
+
+![PR935](../public/assets/vitepress-contribution/PR934.webp)
+
+![PR1214](../public/assets/vitepress-contribution/PR1214.webp)
+
+예전 이력 몇 가지를 찾아볼 수 있었어요. 그 중 하나인 텔레그램 소셜 링크를 추가하는 PR(#934)인데요. 해당 PR은 Merge 되지 않고 Closed가 된 것을 확인할 수 있어요. 텔레그램 뿐만 아니라 다른 PR(#1214)에서 GitLab, Reddit, Tittok, Twitch 소셜 링크도 Closed 되었습니다. Maintainer인 brc-dd 개발자님의 코멘트에서 그 이유를 확인할 수 있었는데요.
+
+![brc-dd-comment](../public/assets/vitepress-contribution/brc-dd-comment.webp)
+
+“소셜 링크의 기능이 리팩토링 되어 API가 더욱 유연해져 사용자가 원하는 아이콘을 추가할 수 있습니다. 따라서 해당 이슈를 닫습니다.”라는 이유로 더 이상 새로운 소셜 링크 옵션을 받고 있지 않다는 것을 알 수 있습니다.
+
+여기서 NPM도 똑같은 이유로 Closed 되겠다, 하지 말까라는 생각이 잠깐 들었지만 NPM의 경우는 다르다고 생각했습니다. 또한 NPM이 왜 필요한지 설득할 수 있지 않을까 하여 포기하지 않고 이슈를 생성했어요.
+
+# 기여의 두 번째 걸음
+
+![이슈 생성](../public/assets/vitepress-contribution/my-first-issue.webp)
+
+제가 작성한 이슈의 내용은 이렇습니다. “대부분의 NPM 패키지(라이브러리)를 문서화하는데 널리 사용되고 있으며 NPM을 공식적으로 포함되면 사용자 모두에게 큰 도움이 될 것이라 생각합니다.”라는 핵심 내용을 담고 해당 이슈 작업을 어떻게 진행할 건지도 간단하게 작성했어요.
+
+![기여 환영 라벨](../public/assets/vitepress-contribution/contribution-label.webp)
+
+저의 번거로움의 절실함이 통했는지 혹은 NPM이 필요하다고 판단되었는지 따로 댓글(Comment)는 없었지만 `contribution welcome` 라벨로 승인을 받게 되었어요!
+
+```ts
+// theme-default/support/socialIcons.ts
+// types/default-theme.d.ts
+type SocialLinkIcon =
+  | 'discord'
+  | 'facebook'
+  | 'github'
+  | 'instagram'
+  | 'linkedin'
+  | 'mastodon'
+  | 'npm' // 영어 순서로 여기에 추가
+  | 'slack'
+  | 'twitter'
+  | 'x';
+```
+
+```ts
+// used under CC0 1.0 from https://simpleicons.org/
+export const icons = {
+  // ... 기존 코드
+  npm: '<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>npm</title><path d="M1.763 0C.786 0 0 .786 0 1.763v20.474C0 23.214.786 24 1.763 24h20.474c.977 0 1.763-.786 1.763-1.763V1.763C24 .786 23.214 0 22.237 0zM5.13 5.323l13.837.019-.009 13.836h-3.464l.01-10.382h-3.456L12.04 19.17H5.113z"/></svg>',
+  // ... 기존 코드
+};
+```
+
+이슈에 적은 내용 대로 SocialLinkIcon Type과 icons에 svg 코드를 넣어 총 3개의 파일에 npm을 추가했습니다. 수정 후 혹시나 하는 마음에 테스트 스크립트를 실행하여 테스트가 모두 통과하는지도 확인했어요.
+
+![테스트 코드 진행](../public/assets/vitepress-contribution/test-code.webp)
+
+마지막으로 commit-convention.md에 나와있는 커밋 컨벤션을 확인하고 커밋 하여 PR을 보냈습니다. (두근두근)
+
+![PR 보내기](../public/assets/vitepress-contribution/my-pr.webp)
+
+몇 분 후 확인해 보니 빠르게 Merge가 됐어요! 이렇게 저의 인생 첫 오픈소스 프로젝트 기여가 되었습니다.
+
+![기여 완료](../public/assets/vitepress-contribution/commit-log.webp)
+
+해외의 오픈소스 프로젝트에 저의 프로필과 이름이 있는 게 참 신기해서 몇 분 동안 보고 있었어요. ⭐10k 규모 오픈소스 프로젝트의 contributor가 되다니 믿기지 않고 신기했어요.
+
+현재 VitePress는 `1.0.0-rc.39` 버전이에요. 업데이트가 되어 `1.0.0-rc.40` 이상이 되면 제가 기여한 소셜 링크 NPM을 만나보실 수 있을 거예요. 저처럼 NPM 라이브러리를 개발하고 공식 문서를 VitePress를 사용하신다면 NPM 소셜 링크 많은 사용 부탁드려요!
+
+# 2024-01-22 추가
+
+![체인지로그](../public/assets/vitepress-contribution/changelog.webp)
+
+기여일 다음 주쯤에 업데이트된 버전 1.0.0-rc.40 버전에 저의 기여가 포함됐습니다!
+
+# 마치며
+
+지금까지 저의 첫 기여 에피소드였습니다. 소셜 링크 API의 업데이트로 인해 추가 소셜 링크 옵션을 더 이상 받지 않겠다는 Maintainer의 댓글을 보고 포기했다면, 이 기여를 하지 못했을 거예요. 포기하지 않고 이슈를 생성하여 NPM이 필요한 이유를 제시하고, 어떤 파일을 수정하여 작업하겠다고 적어서 기여를 성공적으로 마칠 수 있었습니다.
+
+새로운 도전은 항상 망설여지고 두려운 것 같아요. 이번 기여를 하는 동안에도 포기할까 고민을 많이 했지만, 그래도 한 번 해보자, 이슈로 얘기해 보자고 마음먹어 결국 기여를 완수할 수 있었어요. 여러분도 근거가 있다면 포기하지 않고 끝까지 도전하시기 바랍니다.
+
+# 참고
+
+- https://github.com/vuejs/vitepress
+- https://github.com/vuejs/vitepress/issues?q=author%3Agwansikk

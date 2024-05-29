@@ -1,14 +1,14 @@
 ---
 title: React.FC를 미워하지 않을 용기
-date: 2023-10-03
+description: React.FC에 대해서 지양해야한다고 말해요. 왜 그런걸까요? 이젠 지양하지 않아도 돼요.
+date: 2023-07-27
 tags: [react]
 thumbnail: https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8UmVhY3R8ZW58MHx8MHx8fDA%3D
-description: React.FC에 대해서 지양해야한다고 말해요. 왜 그런걸까요? 이젠 지양하지 않아도 돼요.
 ---
 
 # 들어가며
 
-![React.FC 검색 결과](../public/assets/react-fc.png)
+![React.FC 검색 결과](../public/assets/react-fc/react-fc.webp)
 
 React.FC (이하 FC) 관련하여 검색하면 나오는 글들이 대부분 FC의 사용을 지양해야 한다는 글이에요. 그 이유로는 FC는 기본적으로 props에 children을 포함하기 때문인데요. 현재는 children을 포함하고 있지 않습니다. 하지만 여전히 많은 자료가 FC를 지양해야 한다는 글이 있고, 옛날 글들이 상위에 노출 되고 있으며 업데이트 된 FC의 children은 `deprecated` 됐다는 정보를 포함하고 있지 않아 작성하게 됐어요.
 
@@ -93,7 +93,7 @@ const MyComponent: React.FC<Props> = ({ message = "기본 메시지" }) => {
 
 # FC를 사용하면 어떤 이점이 있을까요
 
-이래저래 chdilren의 암시적 포함도 해결되고 defaultProps도 해결이 됐는데 어떤 걸 사용하지 모르시겠다고요? 사실 정답은 없습니다. 직접 타입을 지정해도 되고 변경된 FC를 사용해도 됩니다. 하지만 해당 글에서는 FC를 사용하면 이점이 간단하게 소개하도록 하겠습니다.
+이래저래 chdilren의 암시적 포함도 해결되고 defaultProps도 해결이 됐는데 어떤 걸 사용하지 모르시겠다고요? 사실 정답은 없습니다. 직접 타입을 지정해도 되고 변경된 FC를 사용해도 됩니다. 하지만 해당 글에서는 FC를 사용하면 이점이 뭔지 간단하게 소개하도록 하겠습니다.
 
 - 명시적인 타입 정의: FC를 사용함으로써 컴포넌트가 React 함수형 컴포넌트인지 명확하게 알 수 있습니다.
 - displayName: 해당 속성을 통해서 디버깅 할 때 컴포넌트 이름으로 식별할 수 있어요.

@@ -35,7 +35,7 @@ export const mdxComponents: MDXComponents = {
         blurDataURL={imageURL}
         src={imageURL}
         alt={props.alt as string}
-        className="h-[520px] w-full rounded-lg border border-zinc-800 object-cover"
+        className="my-5 max-h-[520px] w-full rounded-lg border border-zinc-800 object-cover object-left-top"
       />
     );
   },
@@ -52,7 +52,7 @@ export const mdxComponents: MDXComponents = {
   ),
   blockquote: (props) => (
     <blockquote
-      className="border-l-4 border-zinc-400 bg-zinc-800 py-0.5 pl-4"
+      className="!my-1.5 border-l-4 border-zinc-400 bg-zinc-800 py-0.5 pl-4"
       {...props}
     />
   ),

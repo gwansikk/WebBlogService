@@ -66,7 +66,7 @@ const CardImage = ({ className, src, alt }: CardImageProps) => {
 const CardInfo = ({ className, tags, title, description }: CardInfoProps) => {
   return (
     <div className={cn('grow text-wbs-white/70', className)}>
-      <div className="flex gap-2">
+      <div className="flex gap-2 overflow-hidden">
         {tags.map((tag) => (
           <Badge key={tag}>{tag.toUpperCase()}</Badge>
         ))}

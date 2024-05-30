@@ -34,7 +34,7 @@ const PostHead = ({
         placeholder="blur"
         blurDataURL={thumbnail}
         priority
-        className="h-[520px] w-full rounded-lg border border-zinc-800 object-cover object-left-top"
+        className="h-[520px] w-full rounded-lg border border-zinc-800 object-cover"
       />
       <div>
         <div className="flex gap-2">
@@ -42,7 +42,7 @@ const PostHead = ({
             <Badge key={tag}>{tag.toUpperCase()}</Badge>
           ))}
         </div>
-        <h1 className="text-4xl font-bold leading-relaxed text-white">
+        <h1 className="break-keep text-4xl font-bold leading-relaxed text-white">
           {title}
         </h1>
         <p>{description}</p>

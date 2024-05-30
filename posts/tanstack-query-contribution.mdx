@@ -1,0 +1,261 @@
+---
+title: TanStack Query 개발 중 마주친 버그 개선하고 기여하기
+description: 프로젝트 개발 도중 마주친 버그를 개선하고 기여하는 에피소드를 이야기합니다.
+date: 2024-03-30
+tags: [tanstack-query]
+thumbnail: /assets/tanstack-query-contribution/tanstack-query.webp
+---
+
+# 들어가며
+
+TanStack Query에서 조건에 따라 쿼리를 비활성화 혹은 일시정지를 `skipToken`을 통해서 할 수 있는데요. useQueries에서 `skipToken`를 사용하게 되면 반환되는 데이터가 `unknown`으로 타입 추론이 안되는 버그가 있었습니다. 해당 버그를 개선하여 기여하는 과정을 이야기하고자 해요.
+
+# TanStack Query란
+
+![TanStack Query 랜딩 페이지](/assets/tanstack-query-contribution/tanstack-query-latest.webp)
+
+프론트엔드 기술셋에서 TanStack Query(예전엔 React Query라고 불러졌습니다.)는 데이터 패치, 동기화, 업데이트 등 서버 상태 관리를 위한 라이브러리이에요. 데이터를 서버에서 가져오고 이를 캐싱하고 자동으로 상태를 업데이트하는 등 편리한 기능을 제공하고 있어요. 프런트엔드 개발자라면 아주 친숙하죠.
+
+# skipToken은 뭔가요
+
+쿼리가 자동으로 실행되지 않도록 하려면 `enabled` 옵션이나 `skipToken을` 사용해야해요. 특히 `skipToken은` 조건에 따라 쿼리를 비활성화하고 싶을 때 사용해요.
+
+```ts
+// TanStack Query 공식 Docs의 예제 일부
+function Todos() {
+  const [filter, setFilter] = React.useState<string | undefined>()
+
+  const { data } = useQuery({
+    queryKey: ['todos', filter],
+    // ⬇️ 필터가 정의되지 않았거나 비어 있으면 비활성화됩니다.
+    queryFn: filter ? () => fetchTodos(filter) : skipToken,
+  })
+
+  return (
+    <div>
+      // 🚀 필터를 적용하면 쿼리가 활성화되어 실행됩니다.
+      <FiltersForm onApply={setFilter} />
+      {data && <TodosTable data={data} />}
+    </div>
+  )
+}
+```
+
+TanStack Query 공식 문서에 있는 예제를 가져왔는데요. 필터를 적용하면 위에 선언한 쿼리가 실행돼요. 반대로 필터가 없을 경우 해당 쿼리는 비활성화되어 실행되지 않습니다. 조건으로 분기 처리하여 해당 쿼리를 비활성화하고자 할 때 사용해요.
+
+# 개발 중 버그를 발견하다
+
+```ts
+// 동아리 일정을 조회합니다.
+export const useSchedule = ({ isNotAdmin }: UseScheduleParams) => {
+  return useQueries({
+    queries: [
+      {
+        queryKey: QUERY_KEY.SCHEDULE,
+        queryFn: () => getSchedule, // API Call
+      },
+      {
+        // 해당 일정 정보는 운영진에게만 제공 됩니다.
+        queryKey: QUERY_KEY.NOTICE.ADMIN,
+        queryFn: isNotAdmin
+          ? skipToken // 어드민이 아닐 경우 해당 쿼리를 비활성화
+          : () => getAdminSchedule(), // API Call
+      },
+    ],
+  });
+};
+
+// 사용 예시
+const results = useSchedule({ isNotAdmin: true });
+
+results[0].data; // ✅ 사용자 일정, data : BaseResponse<Schedule>
+results[1].data; // 🚨 운영진 일정, data : unknown
+```
+
+useQueries를 사용하여 다양한 쿼리를 한 번에 처리하는 경우가 있었어요. 동아리 관련 프로젝트에서 일정을 조회하는 훅에서 운영진(어드민)일 경우 운영진에게만 필요한 일정을 같이 조회되는 훅에서 버그가 발생한 거예요. 반환된 운영진 일정의 데이터 타입이 unknown으로 나타났습니다.
+
+다른 훅에서도 비슷한 문제가 생긴 것을 확인하고 디버깅 한 결과 skipToken를 사용하면 발생되는 문제였어요. 처음에는 제가 useQueries를 잘못 사용하고 있나 공식 문서도 확인해 봤지만 해결할 수 없었죠. 이 문제가 버그인 지는 깃허브(Github)에 TanStack/Query 이슈를 통해 확신할 수 있었습니다.
+
+# 개발 중 마주친 문제는 버그였다
+
+![PR#7035](/assets/tanstack-query-contribution/PR7035.webp)
+
+useQuerirs에서 skipToken을 사용하면 정상적인 타입 추론이 안되는 버그는 3월 6일 깃허브 이슈를 통해 제보된 상태였어요. 제 환경에서만 겪는 문제가 아니었습니다. (제 코드는 잘못이 없어요ㅜ 흑)
+
+해당 이슈를 보자마자 내가 한 번 해결해 봐야겠다고 생각되었고, 이전에 오픈소스에 기여한 기억으로 CONTRIBUTING.md도 살펴봤어요. 이전에 기여했던 VitePress와 크게 다른 점이 없었고 바로 포크(Fork)를 진행하여 환경 세팅을 했습니다.
+
+# 엄청난 코드, 삽질의 시작
+
+![tanstack-query](/assets/tanstack-query-contribution/code.webp)
+
+로컬 환경에 세팅 후 코드를 열어본 순간 깜짝 놀랐어요. 엄청난 코드의 양과 프로젝트 규모… 모노레포(Monorepo)로 많은 라이브러리(Vue, Svelte, Solid, React, Angular)로 구성되어 있었어요.
+
+코드를 보자마자 어디서부터 보고 수정해야 할지 막막했어요. 이게 큰 규모의 오픈소스 라이브러리구나를 느꼈죠. 일단 먼저 useQueries가 선언되어 있는 코드를 살펴보기로 했어요. 타입 추론이 안되는 버그니 타입 추론 쪽을 살펴보면 되겠지 하는 막연한 생각이었어요. 상대는 엄청난 규모의 오픈소스 라이브러리인데 말이죠.
+
+```ts
+// useQueries 타입 추론에 대한 코드 일부
+/**
+ * QueriesOptions reducer recursively unwraps function arguments to infer/enforce type param
+ */
+export type QueriesOptions<
+  T extends Array<any>,
+  TResults extends Array<any> = [],
+  TDepth extends ReadonlyArray<number> = [],
+> = TDepth['length'] extends MAXIMUM_DEPTH
+  ? Array<UseQueryOptionsForUseQueries>
+  : T extends []
+    ? []
+    : T extends [infer Head]
+      ? [...TResults, GetUseQueryOptionsForUseQueries<Head>]
+      : T extends [infer Head, ...infer Tails]
+        ? QueriesOptions<
+            [...Tails],
+            [...TResults, GetUseQueryOptionsForUseQueries<Head>],
+            [...TDepth, 1]
+          >
+        : Array<unknown> extends T
+          ? T
+          : // If T is *some* array but we couldn't assign unknown[] to it, then it must hold some known/homogenous type!
+            // use this to infer the param types in the case of Array.map() argument
+            T extends Array<
+                UseQueryOptionsForUseQueries<
+                  infer TQueryFnData,
+                  infer TError,
+                  infer TData,
+                  infer TQueryKey
+                >
+              >
+            ? Array<
+                UseQueryOptionsForUseQueries<
+                  TQueryFnData,
+                  TError,
+                  TData,
+                  TQueryKey
+                >
+              >
+            : // Fallback
+              Array<UseQueryOptionsForUseQueries>;
+```
+
+어떤가요? 보자마자 쉽지 않겠다는 생각이 절로 들죠? 여기부터 저의 삽질은 시작되었답니다. useQueries를 써보기만 했지 내부적인 코드가 어떤 메커니즘으로 작동하고 타입은 선언되어 추론 되는지도 모르는 제가 해당 이슈를 한 번 고쳐보겠다는 마음가짐으로 밤을 새우며 분석했습니다.
+
+useQueries를 이해하려면 먼저 useQuery에 대해 알아야 했고 선언된 타입을 어느정도 숙지해야 합니다. 특히 내부적인 핵심 코드는 `useBaseQuery`에 작성되어 있어요. 해당 부분을 중심으로 코드를 분석했습니다. (프론트엔드 개발자라면 해당 코드를 읽어보는 것을 추천해요, 해당 코드 분석은 여유가 된다면 다음에 게시글로 다뤄볼게요.)
+
+어느 정도 코드를 분석하고 메커니즘을 이해해도 해당 이슈를 해결하기 어려웠어요. 타입 추론 관련에서는 타입스크립트에 관련된 문제기도 하고요. 위에 있는 `QueriesOptions`뿐만 아니라 파라미터를 타입 추론을 하는`GetUseQueryOptionsForUseQueries`도 분석하고 수정하는 수많은 시도를 했지만 해결하기는 어려웠어요.
+
+# 해결할 수 있는 희망이 보이다
+
+![comment-hint](/assets/tanstack-query-contribution/comment-hint.webp)
+
+해당 이슈를 해결하고자 하는 시도는 여러 차례 있었습니다. `as const`를 통해 읽기 전용으로 하게 되면 정상적으로 타입 추론이 가능하다는 댓글(Comment)가 있었고 Jaaneek 개발자님께서 해당 이슈를 고친 PR(#7037)을 보낸 상태였습니다. 하지만 해당 PR은 Merge가 아닌 Closed 상태였어요.
+
+![comment-skiptoken](/assets/tanstack-query-contribution/comment-skiptoken.webp)
+
+해당 문제를 해결할 수 있지만 solid/vue/svelte에 적용하면 에러가 발생되어 지금 좋은 해결 책을 찾을 수 없다는 이유로 Closed 상태가 된 것이에요.
+
+하지만 저는 기존 PR과 댓글에서 힌트를 얻을 수 있었습니다. `as const`, 즉 readonly 상태일 경우 정상적인 타입 추론이 가능하다면 내부적으로 readonly 상태로 만들어서 하면 되지 않을까라는 생각에 다시 시도해볼 수 있었습니다.
+
+```ts
+/**
+ * QueriesOptions reducer recursively unwraps function arguments to infer/enforce type param
+ */
+export type QueriesOptions<
+  T extends Array<any>,
+  TResults extends Array<any> = [],
+  TDepth extends ReadonlyArray<number> = [],
+> = TDepth['length'] extends MAXIMUM_DEPTH
+  ? Array<UseQueryOptionsForUseQueries>
+  : T extends []
+    ? []
+    : T extends [infer Head]
+      ? [...TResults, GetUseQueryOptionsForUseQueries<Head>]
+      : T extends [infer Head, ...infer Tails]
+        ? QueriesOptions<
+            [...Tails],
+            [...TResults, GetUseQueryOptionsForUseQueries<Head>],
+            [...TDepth, 1]
+          >
+        : ReadonlyArray<unknown> extends T // 🛠️ Readonly !
+          ? T
+          : // If T is *some* array but we couldn't assign unknown[] to it, then it must hold some known/homogenous type!
+            // use this to infer the param types in the case of Array.map() argument
+            T extends Array<
+                UseQueryOptionsForUseQueries<
+                  infer TQueryFnData,
+                  infer TError,
+                  infer TData,
+                  infer TQueryKey
+                >
+              >
+            ? Array<
+                UseQueryOptionsForUseQueries<
+                  TQueryFnData,
+                  TError,
+                  TData,
+                  TQueryKey
+                >
+              >
+            : // Fallback
+              Array<UseQueryOptionsForUseQueries>;
+```
+
+타입 추론에서 readonly로 선언이 가능한 부분을 순차력으로 입력하여 테스트 코드와 함께 디버깅하며 시도한 끝에 `QueriesOptions`에서 `Array<unknown> extends T`를 `ReadonlyArray<unknown> extends T`로 readonly 타입으로 변경하게 되면 `as const`를 사용하지 않고도 정상적으로 추론이 되는 사실을 확인하게 되었습니다. (타입 추론과 관련하여 dev-tool이 없어 타입 추론이 잘 유도되는지 확인하는 방법은 차례대로 수정하여 확인하는 방법 밖에 없었어요. 관련하여 좋은 dev-tool이나 팁이 있다면 알려주세요.)
+
+하지만 이 방법은 기존에 Jaaneek 개발자님의 PR 코드에서도 확인 할 수 있는 방법이에요. 다른 수많은 에러가 발생되어 Closed 되었다는 방법이죠. 그래서 저는 RadonlyArray를 사용하고 추가적으로 발생되는 에러를 고치는 방향으로 시도했어요.
+
+# 돌아보면 간단한 문제
+
+```ts
+// useQueries.ts
+const defaultedQueries = React.useMemo(() =>
+  queries.map((opts) => {
+    const defaultedOptions = client.defaultQueryOptions(
+      opts as QueryObserverOptions<unknown, Error, unknown, unknown, QueryKey>,
+    );
+  }),
+);
+```
+
+ReadonlyArray로 변경하게 되면 5개 정도 타입 오류가 추가로 발생되는데 이는 ReadonlyArray로 인해 타입 지정이 안되는 에러였어요. 차례대로 타입을 제네릭으로 지정하여 오류를 개선해나갔는데, 최종적으로 `defaultedQueries`에 있는 `opts`의 타입을 지정해주면 다른 모든 에러가 해결되는 문제였어요.
+
+```ts
+// useQeries의 skipToken 타입 추론 테스트 코드
+it('TData should have correct type when conditional skipToken is passed', () => {
+  const queryResults = useQueries({
+    queries: [
+      {
+        queryKey: ['withSkipToken'],
+        queryFn: Math.random() > 0.5 ? skipToken : () => Promise.resolve(5),
+      },
+    ],
+  });
+
+  const data = queryResults[0].data;
+
+  expectTypeOf(data).toEqualTypeOf<number | undefined>();
+});
+```
+
+최종적으로 해당 이슈에 대한 테스트 코드도 작성하여 사전에 에러를 식별하고 유지보수 용이하도록 하였습니다.
+
+![comment-tkdodo](/assets/tanstack-query-contribution/comment-tkdodo.webp)
+
+PR(#7150)을 생성하고 TanStack Query의 Maintainer인 TkDodo 개발자님이 다른 어댑터(Angular, Solid, Svelte, Vue)에도 적용하여 동일한 버그를 개선해달라는 댓글이 달려 추가로 커밋하여 해당 이슈를 완벽히 개선할 수 있었어요. 그 다음 날 Merge 되어 TanStack Query의 Contributor가 됐습니다. 👏
+
+![changelog](/assets/tanstack-query-contribution/changelog.webp)
+
+제가 개선한 타입 추론 버그는 `v5.28.8`에 포함되어 릴리즈가 되었습니다.
+
+# 마치며
+
+어떤 문제든 돌아보면 참 쉬운 거 같아요. 그 과정에서 수많은 시행착오가 있었고 배우는 것도 많았고 엄청 어려웠는데 말이죠. 해당 이슈를 해결하는 과정에서도 어려움이 많았어요. 타입스크립트의 유틸리티 타입, any 타입에서 원하는 타입으로 추론하는 복잡한 로직, 내부적인 이해도 필요하고 복합적으로 많은 이해도가 필요했던 경험이에요.
+
+해당 버그를 개선하면서 기술적으로 배운 것이 많아요. useQuery의 매커니즘 뿐만 아니라 모노레포 구성, 테스트 코드, NX CI 등 많은 개발자 도구에 익숙해질 수 있었어요. 회고 글에는 이 수많은 과정이 들어가 있지 않지만 이런 사소한 버그를 고치는 과정에서 새로운 경험과 기술을 배울 수 있었습니다. 이게 오픈소스 기여에 장점인 거 같아요.
+
+여러분들도 오픈소스 기여를 통해서 많은 성장과 사고를 했으면 좋겠습니다. TanStack Query에 기여에 관련하여 궁금하시거나 관심이 있으시다면 연락 주시면 최대한 도와드리겠습니다.
+
+# 참고
+
+- https://tanstack.com/query/latest
+- https://github.com/TanStack/query
+- https://github.com/TanStack/query/pull/7150

@@ -29,7 +29,7 @@ export default function RootLayout({
       <body
         className={cn(
           inter.className,
-          'flex min-h-dvh flex-col justify-between bg-wbs-black text-wbs-white',
+          'flex min-h-screen flex-col bg-wbs-black text-wbs-white',
         )}
       >
         {children}

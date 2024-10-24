@@ -6,8 +6,6 @@ import { APP_THEME_SCREENS_MAX_WIDTH } from '@constants/environment';
 
 import { formatDate } from '@utils/date';
 
-import Badge from '@components/Badge/Badge';
-
 import Image from 'next/image';
 
 import type { Post } from '@type/post';
@@ -19,7 +17,6 @@ interface PostHeadProps extends Omit<Post, 'body'> {
 const PostHead = ({
   title,
   date,
-  tags,
   thumbnail,
   description,
   time,
@@ -37,11 +34,6 @@ const PostHead = ({
         className="h-[520px] w-full rounded-lg border border-zinc-800 object-cover"
       />
       <div>
-        <div className="flex gap-2">
-          {tags.map((tag) => (
-            <Badge key={tag}>{tag.toUpperCase()}</Badge>
-          ))}
-        </div>
         <h1 className="break-keep text-4xl font-bold leading-relaxed text-white">
           {title}
         </h1>

@@ -8,7 +8,7 @@ export const mdxComponents: MDXComponents = {
   h1: ({ children, ...rest }) => (
     <h1
       id={children?.toString().replace(/ /g, '-').toLowerCase()}
-      className="pt-8 text-3xl font-semibold text-white"
+      className="pb-2 pt-8 text-3xl font-semibold text-white"
       {...rest}
     >
       {children}
@@ -35,7 +35,7 @@ export const mdxComponents: MDXComponents = {
         blurDataURL={imageURL}
         src={imageURL}
         alt={props.alt as string}
-        className="my-5 max-h-[520px] w-full rounded-lg border border-zinc-800 object-cover object-left-top"
+        className="max-h-[520px] w-full rounded-lg border border-zinc-800 object-cover object-left-top"
       />
     );
   },

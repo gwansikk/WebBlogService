@@ -6,8 +6,6 @@ import { PATH_FINDER } from '@constants/path';
 import { cn } from '@utils/common';
 import { formatDate } from '@utils/date';
 
-import Badge from '@components/Badge/Badge';
-
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -24,7 +22,7 @@ interface CardImageProps extends PropsWithClassName {
 }
 
 interface CardInfoProps
-  extends Pick<Post, 'tags' | 'title' | 'description'>,
+  extends Pick<Post, 'title' | 'description'>,
     PropsWithClassName {}
 
 interface CardMetaProps extends Pick<Post, 'date'> {
@@ -63,14 +61,9 @@ const CardImage = ({ className, src, alt }: CardImageProps) => {
   );
 };
 
-const CardInfo = ({ className, tags, title, description }: CardInfoProps) => {
+const CardInfo = ({ className, title, description }: CardInfoProps) => {
   return (
     <div className={cn('grow text-wbs-white/70', className)}>
-      <div className="flex gap-2 overflow-hidden">
-        {tags.map((tag) => (
-          <Badge key={tag}>{tag.toUpperCase()}</Badge>
-        ))}
-      </div>
       <div className="break-keep">
         <h3 className="line-clamp-2 text-lg font-semibold text-white">
           {title}

@@ -1,8 +1,10 @@
 import getPosts from '@lib/get-posts';
 
-import Banner from '@components/Banner/Banner';
-import Card from '@components/Card/Card';
-import PageLayout from '@components/PageLayout/PageLayout';
+import { readTime } from '@utils/number';
+
+import Banner from '@components/Banner';
+import Card from '@components/Card';
+import PageLayout from '@components/PageLayout';
 
 export default async function MainPage() {
   const posts = await getPosts();
@@ -20,15 +22,15 @@ export default async function MainPage() {
         <Card.Info className="text-wbs-white" {...banner} />
         <Card.Meta
           className="justify-start text-wbs-white"
-          time={10}
+          time={Math.floor(readTime(banner.body))}
           {...banner}
         />
       </Banner>
-      {posts?.slice(1).map(({ thumbnail, title, ...props }) => (
+      {posts?.slice(1).map(({ thumbnail, title, body, ...props }) => (
         <Card key={title} to={title}>
           <Card.Image src={thumbnail} alt={title} />
           <Card.Info title={title} {...props} />
-          <Card.Meta time={13} {...props} />
+          <Card.Meta time={readTime(body)} {...props} />
         </Card>
       ))}
     </PageLayout>

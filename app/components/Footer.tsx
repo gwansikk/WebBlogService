@@ -1,11 +1,10 @@
-import { FaGithub, FaRssSquare } from 'react-icons/fa';
+import { FaGithub } from 'react-icons/fa';
 
 import { APP_NAME, APP_SOCIAL_LINK } from '@constants/environment';
 
-import Button from '@components/Button/Button';
-import LinkButton from '@components/LinkButton/LinkButton';
+import LinkButton from '@components/LinkButton';
 
-const Footer = () => {
+export default function Footer() {
   return (
     <footer className="container flex justify-between py-4 text-sm">
       <ul className="flex items-center gap-1">
@@ -20,12 +19,7 @@ const Footer = () => {
             <FaGithub className="size-5" />
           </LinkButton>
         ))}
-        <Button>
-          <FaRssSquare className="size-5" />
-        </Button>
       </div>
     </footer>
   );
-};
-
-export default Footer;
+}

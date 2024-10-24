@@ -8,7 +8,7 @@ import { mdxComponents } from './markdown-components';
 
 export function PostBody({ children }: Readonly<{ children: string }>) {
   return (
-    <section className="space-y-1.5 break-keep leading-relaxed">
+    <section className="space-y-2 break-keep leading-relaxed">
       <MDXRemote
         source={children}
         options={{

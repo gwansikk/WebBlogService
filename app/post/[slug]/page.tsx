@@ -1,3 +1,5 @@
+import { readTime } from '@utils/number';
+
 import getPosts, { getPost } from '@/app/lib/get-posts';
 import { notFound } from 'next/navigation';
 
@@ -23,8 +25,8 @@ export default async function PostPage({ params }: Readonly<PostPrams>) {
 
   return (
     <>
-      <PostHead {...post} time={10} />
-      <PostBody>{post?.body}</PostBody>
+      <PostHead {...post} time={readTime(post.body)} />
+      <PostBody>{post.body}</PostBody>
       <PostFooter />
     </>
   );

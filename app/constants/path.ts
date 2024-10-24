@@ -1,8 +1,6 @@
 export const PATH = {
   HOME: '/',
   POST: '/post',
-  TAGS: '/tags',
-  ABOUT: '/about',
 } as const;
 
 export const PATH_FINDER = {

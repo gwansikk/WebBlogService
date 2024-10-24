@@ -2,16 +2,18 @@ import { cn } from '@utils/common';
 
 import type { ParentProps } from '@type/props';
 
-import Footer from '../Footer/Footer';
-import Nav from '../Nav/Nav';
+import Footer from './Footer';
+import Nav from './Nav';
 
 const PageLayout = ({ className, children }: ParentProps) => {
   return (
     <>
       <Nav />
-      <main className={cn('container mt-14 justify-between py-5', className)}>
-        {children}
-      </main>
+      <div className="grow">
+        <main className={cn('container mt-14 h-full py-5', className)}>
+          {children}
+        </main>
+      </div>
       <Footer />
     </>
   );

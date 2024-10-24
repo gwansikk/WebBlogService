@@ -45,10 +45,7 @@ export const mdxComponents: MDXComponents = {
   li: (props) => <li className="truncate" {...props} />,
   pre: (props) => <Code className="!my-1.5 !text-sm" {...props} />,
   code: (props) => (
-    <span
-      className="rounded bg-zinc-800 px-1.5 text-sm text-red-400"
-      {...props}
-    />
+    <span className="rounded bg-zinc-600/50 px-0.5 text-sm" {...props} />
   ),
   blockquote: (props) => (
     <blockquote

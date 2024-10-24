@@ -21,8 +21,8 @@ const config: Config = {
         },
       },
       colors: {
-        'wbs-white': '#ddddde',
-        'wbs-black': '#111010',
+        'wbs-white': '#D3D3D3',
+        'wbs-black': '#191919',
         'wbs-gray': '#262626',
         'wbs-primary': theme.primary,
       },

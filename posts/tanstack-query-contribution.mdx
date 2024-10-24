@@ -1,5 +1,5 @@
 ---
-title: TanStack Query 개발 중 마주친 버그 개선하고 기여하기
+title: TanStack Query 개발 중 마주친 버그 개선하고 기여하기1
 description: 프로젝트 개발 도중 마주친 버그를 개선하고 기여하는 에피소드를 이야기합니다.
 date: 2024-03-30
 thumbnail: /assets/tanstack-query-contribution/tanstack-query.webp
@@ -73,13 +73,13 @@ results[1].data; // 🚨 운영진 일정, data : unknown
 
 useQueries를 사용하여 다양한 쿼리를 한 번에 처리하는 경우가 있었어요. 동아리 관련 프로젝트에서 일정을 조회하는 훅에서 운영진(어드민)일 경우 운영진에게만 필요한 일정을 같이 조회되는 훅에서 버그가 발생한 거예요. 반환된 운영진 일정의 데이터 타입이 unknown으로 나타났습니다.
 
-다른 훅에서도 비슷한 문제가 생긴 것을 확인하고 디버깅 한 결과 skipToken를 사용하면 발생되는 문제였어요. 처음에는 제가 useQueries를 잘못 사용하고 있나 공식 문서도 확인해 봤지만 해결할 수 없었죠. 이 문제가 버그인 지는 깃허브(Github)에 TanStack/Query 이슈를 통해 확신할 수 있었습니다.
+다른 훅에서도 비슷한 문제가 생긴 것을 확인하고 디버깅 한 결과 skipToken를 사용하면 발생되는 문제였어요. 처음에는 제가 useQueries를 잘못 사용하고 있나 공식 문서도 확인해 봤지만 해결할 수 없었죠. 이 문제가 버그인 지는 깃허브(Github)에서 [TanStack/Query 이슈](https://github.com/TanStack/query/issues/7035)를 통해 확신할 수 있었습니다.
 
 # 개발 중 마주친 문제는 버그였다
 
 ![PR#7035](/assets/tanstack-query-contribution/PR7035.webp)
 
-useQuerirs에서 skipToken을 사용하면 정상적인 타입 추론이 안되는 버그는 3월 6일 깃허브 이슈를 통해 제보된 상태였어요. 제 환경에서만 겪는 문제가 아니었습니다. (제 코드는 잘못이 없어요ㅜ 흑)
+useQuerirs에서 skipToken을 사용하면 정상적인 타입 추론이 안되는 버그는 3월 6일 깃허브 이슈를 통해 제보된 상태였어요. 제 환경에서만 겪는 문제가 아니었습니다.
 
 해당 이슈를 보자마자 내가 한 번 해결해 봐야겠다고 생각되었고, 이전에 오픈소스에 기여한 기억으로 CONTRIBUTING.md도 살펴봤어요. 이전에 기여했던 VitePress와 크게 다른 점이 없었고 바로 포크(Fork)를 진행하여 환경 세팅을 했습니다.
 

@@ -54,7 +54,7 @@ const CardImage = ({ className, src, alt }: CardImageProps) => {
       placeholder="blur"
       blurDataURL={src}
       className={cn(
-        'h-36 w-full rounded-lg border border-zinc-800 object-cover object-left-top',
+        'h-36 w-full rounded-lg border border-zinc-800 object-cover object-center',
         className,
       )}
     />

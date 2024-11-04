@@ -14,6 +14,15 @@ export const mdxComponents: MDXComponents = {
       {children}
     </h1>
   ),
+  h2: ({ children, ...rest }) => (
+    <h2
+      id={children?.toString().replace(/ /g, '-').toLowerCase()}
+      className="pb-2 pt-4 text-2xl font-semibold text-white"
+      {...rest}
+    >
+      {children}
+    </h2>
+  ),
   p: (props) => <p {...props} />,
   a: ({ children, ...rest }) => (
     <a

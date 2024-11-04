@@ -33,7 +33,7 @@ const Banner = ({ to, src, alt, className, children }: BannerProps) => {
           priority
           placeholder="blur"
           blurDataURL={src}
-          className="h-full w-full rounded-lg border border-zinc-800 object-cover object-left-top"
+          className="h-full w-full rounded-lg border border-zinc-800 object-cover object-center"
         />
         <div className="pointer-events-none absolute inset-0 h-full w-full rounded-lg bg-gradient-to-t from-black/50 via-black/30" />
         <div className="pointer-events-none absolute bottom-0 whitespace-nowrap p-4 text-start">
